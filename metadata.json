@@ -1,0 +1,6 @@
+{
+  "name": "AgriStore Manager",
+  "description": "Account, inventory, and real-time sales reporting system with role-based access control, barcode scanning simulation, low-stock alerts, and offline functionality for Agri stores.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
