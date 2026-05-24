@@ -300,7 +300,7 @@ fun LoginGateScreen(viewModel: AgriViewModel) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Sign In Security",
+                    text = stringResource(R.string.title_login_security),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
@@ -366,7 +366,7 @@ fun LoginGateScreen(viewModel: AgriViewModel) {
 
         Spacer(modifier = Modifier.height(24.dp))
         Text(
-            text = "💡 Tap profile to skip typing on dev simulator:",
+            text = stringResource(R.string.hint_tap_profile),
             fontSize = 13.sp,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -710,13 +710,13 @@ fun DashboardScreen(viewModel: AgriViewModel) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Warehouse Stock Status",
+                        text = stringResource(R.string.title_stock_status),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = "Interactive",
+                        text = stringResource(R.string.label_interactive),
                         fontSize = 11.sp,
                         color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier
@@ -734,7 +734,7 @@ fun DashboardScreen(viewModel: AgriViewModel) {
                     ) {
                         Icon(Icons.Default.CheckCircle, contentDescription = "OK", tint = MaterialTheme.colorScheme.primary)
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("All items are currently at healthy stock quantities.", fontSize = 12.sp)
+                        Text(stringResource(R.string.label_items_healthy), fontSize = 12.sp)
                     }
                 } else {
                     lowStockProducts.take(3).forEach { p ->
@@ -751,7 +751,7 @@ fun DashboardScreen(viewModel: AgriViewModel) {
                             }
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Text(
-                                    text = "${p.stockQuantity} Left",
+                                    text = stringResource(R.string.label_left, p.stockQuantity.toString()),
                                     color = MaterialTheme.colorScheme.onErrorContainer,
                                     fontSize = 11.sp,
                                     fontWeight = FontWeight.Bold,
@@ -772,7 +772,7 @@ fun DashboardScreen(viewModel: AgriViewModel) {
                     }
                     if (lowStockProducts.size > 3) {
                         Text(
-                            text = "And ${lowStockProducts.size - 3} other items need attention. Open Inventory screen to restock.",
+                            text = stringResource(R.string.label_items_attention, lowStockProducts.size - 3),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.error,
@@ -934,7 +934,7 @@ fun CashierScreen(viewModel: AgriViewModel) {
             .padding(16.dp)
     ) {
         // Upper section - Barcode scanning simulation / basket checkout summaries
-        Text("Cashier Checkout Register", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+        Text(stringResource(R.string.title_cashier_register), fontSize = 18.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
         Spacer(modifier = Modifier.height(8.dp))
 
         // Simulated fast scan bar
@@ -945,7 +945,7 @@ fun CashierScreen(viewModel: AgriViewModel) {
         ) {
             Column(modifier = Modifier.padding(10.dp)) {
                 Text(
-                    text = "📟 Mobile Barcode Simulator Scanner",
+                    text = stringResource(R.string.title_barcode_scanner),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary

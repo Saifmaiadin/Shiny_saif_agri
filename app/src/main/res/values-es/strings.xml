@@ -53,4 +53,13 @@
     <string name="label_inventory_excel">Inventario (Excel)</string>
     <string name="label_sales_excel">Ventas (Excel)</string>
     <string name="desc_record_keeping">Genere archivos CSV portátiles compatibles con Microsoft Excel.</string>
+    <string name="title_inventory_desc">Stock Inventory Controller</string>
+    <string name="subtitle_inventory_desc">Track seeds, cattle feeds, and tools offline/online</string>
+    <string name="title_login_security">Sign In Security</string>
+    <string name="hint_tap_profile">💡 Tap profile to skip typing on dev simulator:</string>
+    <string name="title_stock_status">Warehouse Stock Status</string>
+    <string name="label_items_healthy">All items are currently at healthy stock quantities.</string>
+    <string name="label_items_attention">And %d other items need attention.</string>
+    <string name="title_cashier_register">Cashier Checkout Register</string>
+    <string name="label_left">%s Left</string>
 </resources>

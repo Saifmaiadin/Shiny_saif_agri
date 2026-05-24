@@ -100,4 +100,13 @@
     <string name="label_test_barcodes">Tap instant test barcodes to mimic physical container camera scanner:</string>
     <string name="hint_filter_catalog">Filter catalog...</string>
     <string name="label_no_match">No match found in catalog.</string>
+    <string name="title_login_security">Sign In Security</string>
+    <string name="hint_tap_profile">💡 Tap profile to skip typing on dev simulator:</string>
+    <string name="title_stock_status">Warehouse Stock Status</string>
+    <string name="label_interactive">Interactive</string>
+    <string name="label_items_healthy">All items are currently at healthy stock quantities.</string>
+    <string name="label_items_attention">And %d other items need attention. Open Inventory screen to restock.</string>
+    <string name="title_cashier_register">Cashier Checkout Register</string>
+    <string name="title_barcode_scanner">📟 Mobile Barcode Simulator Scanner</string>
+    <string name="label_left">%s Left</string>
 </resources>

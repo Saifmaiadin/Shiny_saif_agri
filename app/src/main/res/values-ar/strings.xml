@@ -53,4 +53,13 @@
     <string name="label_inventory_excel">المخزون (إكسيل)</string>
     <string name="label_sales_excel">المبيعات (إكسيل)</string>
     <string name="desc_record_keeping">إنشاء ملفات CSV محمولة متوافقة مع مايكروسوفت إكسيل.</string>
+    <string name="title_inventory_desc">مراقب مخزون المنتجات</string>
+    <string name="subtitle_inventory_desc">تتبع البذور والأعلاف والأدوات</string>
+    <string name="title_login_security">أمان تسجيل الدخول</string>
+    <string name="hint_tap_profile">💡 اضغط على الملف الشخصي لتخطي الكتابة:</string>
+    <string name="title_stock_status">حالة مخزون المستودع</string>
+    <string name="label_items_healthy">جميع العناصر حالياً بكميات صحية.</string>
+    <string name="label_items_attention">وهناك %d عناصر أخرى تحتاج إلى اهتمام.</string>
+    <string name="title_cashier_register">سجل كاشير المبيعات</string>
+    <string name="label_left">بقي %s</string>
 </resources>

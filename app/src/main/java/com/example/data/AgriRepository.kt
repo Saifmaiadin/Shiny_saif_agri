@@ -14,7 +14,7 @@ class AgriRepository(private val context: Context) {
             AgriDatabase::class.java,
             "agristore_database.db"
         )
-        .fallbackToDestructiveMigration()
+        .fallbackToDestructiveMigration(true)
         .build()
     }
 

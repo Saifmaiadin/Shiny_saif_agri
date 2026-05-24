@@ -53,4 +53,13 @@
     <string name="label_inventory_excel">Склад (Excel)</string>
     <string name="label_sales_excel">Продажи (Excel)</string>
     <string name="desc_record_keeping">Генерация переносимых CSV-файлов, совместимых с Microsoft Excel.</string>
+    <string name="title_inventory_desc">Контроллер складских запасов</string>
+    <string name="subtitle_inventory_desc">Отслеживание семян, кормов и инструментов</string>
+    <string name="title_login_security">Безопасность входа</string>
+    <string name="hint_tap_profile">💡 Нажмите на профиль, чтобы пропустить ввод:</string>
+    <string name="title_stock_status">Статус склада</string>
+    <string name="label_items_healthy">Все товары в достаточном количестве.</string>
+    <string name="label_items_attention">И еще %d товаров требуют внимания.</string>
+    <string name="title_cashier_register">Кассовый аппарат</string>
+    <string name="label_left">Осталось %s</string>
 </resources>

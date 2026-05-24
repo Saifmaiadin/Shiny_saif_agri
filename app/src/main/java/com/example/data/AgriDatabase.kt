@@ -119,7 +119,7 @@ interface AgriDao {
 
 @Database(
     entities = [User::class, Product::class, Sale::class, SaleItem::class, SMSAlert::class, Customer::class, Expense::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class AgriDatabase : RoomDatabase() {
