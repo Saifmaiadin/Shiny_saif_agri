@@ -25,6 +25,8 @@ class AgriRepository(private val context: Context) {
     val allSales: Flow<List<Sale>> = dao.getAllSalesFlow()
     val allUsers: Flow<List<User>> = dao.getAllUsersFlow()
     val allAlerts: Flow<List<SMSAlert>> = dao.getAllAlertsFlow()
+    val allCustomers: Flow<List<Customer>> = dao.getAllCustomersFlow()
+    val allExpenses: Flow<List<Expense>> = dao.getAllExpensesFlow()
 
     suspend fun getUserByUsername(username: String): User? = dao.getUserByUsername(username)
     suspend fun getProductBySku(sku: String): Product? = dao.getProductBySku(sku)
@@ -38,6 +40,10 @@ class AgriRepository(private val context: Context) {
     suspend fun deleteUser(username: String) = dao.deleteUser(username)
 
     suspend fun insertAlert(alert: SMSAlert) = dao.insertAlert(alert)
+    suspend fun insertCustomer(customer: Customer) = dao.insertCustomer(customer)
+    suspend fun deleteCustomerById(id: Int) = dao.deleteCustomerById(id)
+    suspend fun insertExpense(expense: Expense) = dao.insertExpense(expense)
+    suspend fun deleteExpenseById(id: Int) = dao.deleteExpenseById(id)
 
     suspend fun processSale(sale: Sale, items: List<SaleItem>): Long {
         return dao.processSaleEntry(sale, items)
@@ -147,6 +153,22 @@ class AgriRepository(private val context: Context) {
                 // Seed some corresponding items
                 dao.insertSaleItem(SaleItem(saleId = sId, productId = 1, productName = "NPK 15-15-15 Max Fertilizer", quantity = 2, unitPrice = 45.99, subTotal = 91.98))
             }
+
+            // 3. Seed some initial customers
+            val seedCustomers = listOf(
+                Customer(name = "Ahmed Mansour", phone = "+20123456789", email = "ahmed@example.com", address = "Cairo, Egypt", totalPurchases = 1500.0),
+                Customer(name = "Fatima Al-Zahra", phone = "+20198765432", email = "fatima@example.com", address = "Giza, Egypt", totalPurchases = 2400.0, creditBalance = 200.0),
+                Customer(name = "John Doe Agri", phone = "+15550101", email = "john@farm.com", address = "Rural Route 1", totalPurchases = 50.0)
+            )
+            for (c in seedCustomers) dao.insertCustomer(c)
+
+            // 4. Seed some initial expenses
+            val seedExpenses = listOf(
+                Expense(title = "Monthly Electricity", category = "Utilities", amount = 120.0, timestamp = System.currentTimeMillis() - 86400000 * 5, note = "Main store meter"),
+                Expense(title = "Staff Salaries - May", category = "Salaries", amount = 2500.0, timestamp = System.currentTimeMillis() - 86400000 * 2, note = "Paid to all staff"),
+                Expense(title = "Seed Stock Purchase", category = "Inventory", amount = 800.0, timestamp = System.currentTimeMillis() - 3600000 * 5, note = "Bulk wheat seeds")
+            )
+            for (e in seedExpenses) dao.insertExpense(e)
             
             // Seed sample active alerts for already low stock items
             dao.insertAlert(SMSAlert(

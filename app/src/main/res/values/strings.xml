@@ -1,3 +1,56 @@
 <resources>
     <string name="app_name">AgriStore Manager</string>
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_cashier">Cashier</string>
+    <string name="nav_inventory">Inventory</string>
+    <string name="nav_expenses">Expenses</string>
+    <string name="nav_customers">Customers</string>
+    <string name="nav_reports">Reports</string>
+    <string name="nav_users">Users</string>
+    <string name="nav_alerts">Alerts</string>
+    
+    <string name="btn_add">Add</string>
+    <string name="btn_delete">Delete</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_search">Search</string>
+    <string name="btn_export">Export</string>
+    <string name="btn_backup">Backup</string>
+    
+    <string name="kpi_total_sales">Total Sales</string>
+    <string name="kpi_total_expenses">Total Expenses</string>
+    <string name="kpi_customer_count">Customers</string>
+    <string name="kpi_low_stock">Low Stock</string>
+    
+    <string name="login_title">AgriStore Login</string>
+    <string name="login_username">Username</string>
+    <string name="login_password">Password</string>
+    <string name="login_btn">Login</string>
+    
+    <string name="cust_name">Customer Name</string>
+    <string name="cust_phone">Phone Number</string>
+    <string name="cust_email">Email</string>
+    <string name="cust_address">Address</string>
+    <string name="cust_balance">Balance</string>
+    
+    <string name="exp_title">Title</string>
+    <string name="exp_category">Category</string>
+    <string name="exp_amount">Amount</string>
+    <string name="exp_note">Note</string>
+    
+    <string name="prod_name">Product Name</string>
+    <string name="prod_price">Price</string>
+    <string name="prod_stock">Stock</string>
+    <string name="prod_sku">SKU</string>
+    
+    <string name="empty_list">No records found</string>
+    <string name="confirm_delete">Are you sure you want to delete?</string>
+    <string name="hint_search">Search...</string>
+    <string name="title_performance">Financial Performance Trends</string>
+    <string name="subtitle_performance">Historical sales revenue records</string>
+    <string name="title_reports_desc">Financial Audits &amp; Data Exports</string>
+    <string name="subtitle_reports_desc">Export specialized Excel-compatible reports</string>
+    <string name="label_inventory_excel">Inventory (Excel)</string>
+    <string name="label_sales_excel">Sales (Excel)</string>
+    <string name="desc_record_keeping">Generate portable CSV files compatible with Microsoft Excel.</string>
 </resources>

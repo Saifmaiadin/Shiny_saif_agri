@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">农资店管理系统</string>
+    <string name="nav_dashboard">仪表盘</string>
+    <string name="nav_cashier">收银台</string>
+    <string name="nav_inventory">库存</string>
+    <string name="nav_expenses">支出</string>
+    <string name="nav_customers">客户</string>
+    <string name="nav_reports">报表</string>
+    <string name="nav_users">用户</string>
+    <string name="nav_alerts">警报</string>
+    
+    <string name="btn_add">添加</string>
+    <string name="btn_delete">删除</string>
+    <string name="btn_save">保存</string>
+    <string name="btn_cancel">取消</string>
+    <string name="btn_search">搜索</string>
+    <string name="btn_export">导出</string>
+    <string name="btn_backup">备份</string>
+    
+    <string name="kpi_total_sales">总销售额</string>
+    <string name="kpi_total_expenses">总支出</string>
+    <string name="kpi_customer_count">客户总数</string>
+    <string name="kpi_low_stock">低库存</string>
+    
+    <string name="login_title">登录</string>
+    <string name="login_username">用户名</string>
+    <string name="login_password">密码</string>
+    <string name="login_btn">登录</string>
+    
+    <string name="cust_name">客户姓名</string>
+    <string name="cust_phone">电话号码</string>
+    <string name="cust_email">电子邮件</string>
+    <string name="cust_address">地址</string>
+    <string name="cust_balance">余额</string>
+    
+    <string name="exp_title">标题</string>
+    <string name="exp_category">类别</string>
+    <string name="exp_amount">金额</string>
+    <string name="exp_note">备注</string>
+    
+    <string name="prod_name">产品名称</string>
+    <string name="prod_price">价格</string>
+    <string name="prod_stock">库存</string>
+    <string name="prod_sku">SKU</string>
+    
+    <string name="empty_list">未找到记录</string>
+    <string name="confirm_delete">您确定要删除吗？</string>
+    <string name="hint_search">搜索...</string>
+</resources>

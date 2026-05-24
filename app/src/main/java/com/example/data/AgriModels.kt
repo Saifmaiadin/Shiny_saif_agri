@@ -60,3 +60,24 @@ data class SMSAlert(
     val sentTo: String,
     val status: String // "DELIVERED", "QUEUED"
 )
+
+@Entity(tableName = "customers")
+data class Customer(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val name: String,
+    val phone: String,
+    val email: String,
+    val address: String,
+    val totalPurchases: Double = 0.0,
+    val creditBalance: Double = 0.0
+)
+
+@Entity(tableName = "expenses")
+data class Expense(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val title: String,
+    val category: String,
+    val amount: Double,
+    val timestamp: Long,
+    val note: String
+)

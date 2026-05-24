@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">Gestor de AgroTienda</string>
+    <string name="nav_dashboard">Panel</string>
+    <string name="nav_cashier">Caja</string>
+    <string name="nav_inventory">Inventario</string>
+    <string name="nav_expenses">Gastos</string>
+    <string name="nav_customers">Clientes</string>
+    <string name="nav_reports">Informes</string>
+    <string name="nav_users">Usuarios</string>
+    <string name="nav_alerts">Alertas</string>
+    
+    <string name="btn_add">Añadir</string>
+    <string name="btn_delete">Eliminar</string>
+    <string name="btn_save">Guardar</string>
+    <string name="btn_cancel">Cancelar</string>
+    <string name="btn_search">Buscar</string>
+    <string name="btn_export">Exportar</string>
+    <string name="btn_backup">Respaldo</string>
+    
+    <string name="kpi_total_sales">Ventas totales</string>
+    <string name="kpi_total_expenses">Gastos totales</string>
+    <string name="kpi_customer_count">Clientes</string>
+    <string name="kpi_low_stock">Stock bajo</string>
+    
+    <string name="login_title">Inicio de sesión</string>
+    <string name="login_username">Usuario</string>
+    <string name="login_password">Contraseña</string>
+    <string name="login_btn">Entrar</string>
+    
+    <string name="cust_name">Nombre del cliente</string>
+    <string name="cust_phone">Teléfono</string>
+    <string name="cust_email">Correo</string>
+    <string name="cust_address">Dirección</string>
+    <string name="cust_balance">Saldo</string>
+    
+    <string name="exp_title">Título</string>
+    <string name="exp_category">Categoría</string>
+    <string name="exp_amount">Monto</string>
+    <string name="exp_note">Nota</string>
+    
+    <string name="prod_name">Producto</string>
+    <string name="prod_price">Precio</string>
+    <string name="prod_stock">Stock</string>
+    <string name="prod_sku">SKU</string>
+    
+    <string name="empty_list">No hay registros</string>
+    <string name="confirm_delete">¿Estás seguro de eliminar?</string>
+    <string name="hint_search">Buscar...</string>
+    <string name="title_performance">Tendencias de Desempeño Financiero</string>
+    <string name="subtitle_performance">Registros históricos de ingresos</string>
+    <string name="title_reports_desc">Auditorías Financieras y Exportación de Datos</string>
+    <string name="subtitle_reports_desc">Exportar informes especializados compatibles con Excel</string>
+    <string name="label_inventory_excel">Inventario (Excel)</string>
+    <string name="label_sales_excel">Ventas (Excel)</string>
+    <string name="desc_record_keeping">Genere archivos CSV portátiles compatibles con Microsoft Excel.</string>
+</resources>

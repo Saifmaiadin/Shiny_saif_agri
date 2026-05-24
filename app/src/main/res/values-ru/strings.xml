@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">АгроМагазин Менеджер</string>
+    <string name="nav_dashboard">Обзор</string>
+    <string name="nav_cashier">Касса</string>
+    <string name="nav_inventory">Инвентарь</string>
+    <string name="nav_expenses">Расходы</string>
+    <string name="nav_customers">Клиенты</string>
+    <string name="nav_reports">Отчеты</string>
+    <string name="nav_users">Пользователи</string>
+    <string name="nav_alerts">Уведомления</string>
+    
+    <string name="btn_add">Добавить</string>
+    <string name="btn_delete">Удалить</string>
+    <string name="btn_save">Сохранить</string>
+    <string name="btn_cancel">Отмена</string>
+    <string name="btn_search">Поиск</string>
+    <string name="btn_export">Экспорт</string>
+    <string name="btn_backup">Резервная копия</string>
+    
+    <string name="kpi_total_sales">Всего продаж</string>
+    <string name="kpi_total_expenses">Всего расходов</string>
+    <string name="kpi_customer_count">Клиенты</string>
+    <string name="kpi_low_stock">Низкий остаток</string>
+    
+    <string name="login_title">Вход в систему</string>
+    <string name="login_username">Имя пользователя</string>
+    <string name="login_password">Пароль</string>
+    <string name="login_btn">Войти</string>
+    
+    <string name="cust_name">Имя клиента</string>
+    <string name="cust_phone">Номер телефона</string>
+    <string name="cust_email">Email</string>
+    <string name="cust_address">Адрес</string>
+    <string name="cust_balance">Баланс</string>
+    
+    <string name="exp_title">Заголовок</string>
+    <string name="exp_category">Категория</string>
+    <string name="exp_amount">Сумма</string>
+    <string name="exp_note">Примечание</string>
+    
+    <string name="prod_name">Название продукта</string>
+    <string name="prod_price">Цена</string>
+    <string name="prod_stock">Остаток</string>
+    <string name="prod_sku">Артикул</string>
+    
+    <string name="empty_list">Записи не найдены</string>
+    <string name="confirm_delete">Вы уверены, что хотите удалить?</string>
+    <string name="hint_search">Поиск...</string>
+    <string name="title_performance">Тенденции финансовых показателей</string>
+    <string name="subtitle_performance">Исторические записи о доходах от продаж</string>
+    <string name="title_reports_desc">Финансовый аудит и экспорт данных</string>
+    <string name="subtitle_reports_desc">Экспорт специализированных отчетов, совместимых с Excel</string>
+    <string name="label_inventory_excel">Склад (Excel)</string>
+    <string name="label_sales_excel">Продажи (Excel)</string>
+    <string name="desc_record_keeping">Генерация переносимых CSV-файлов, совместимых с Microsoft Excel.</string>
+</resources>

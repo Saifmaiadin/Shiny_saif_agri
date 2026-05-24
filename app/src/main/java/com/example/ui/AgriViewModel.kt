@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.data.*
+import com.example.utils.AgriFileUtils
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -18,11 +19,35 @@ enum class StoreNavScreen {
     INVENTORY_MANAGER,
     SALES_REPORTS,
     ALERT_CENTER,
-    ROLE_USERS
+    ROLE_USERS,
+    EXPENSES,
+    CUSTOMERS
 }
 
 class AgriViewModel(private val repository: AgriRepository) : ViewModel() {
+    
+    // ... items ...
 
+    // --- FILE OPERATIONS ---
+    fun exportSalesReport(context: android.content.Context) {
+        AgriFileUtils.exportSalesToCSV(context, allSales.value)
+    }
+
+    fun exportInventoryReport(context: android.content.Context) {
+        AgriFileUtils.exportInventoryToCSV(context, allProducts.value)
+    }
+
+    fun backupAllData(context: android.content.Context) {
+        AgriFileUtils.createBackup(
+            context,
+            allSales.value,
+            allProducts.value,
+            allCustomers.value,
+            allExpenses.value
+        )
+    }
+
+    // ... rest of class ...
     // --- NAVIGATION & ROLE SESSIONS ---
     var currentScreen by mutableStateOf(StoreNavScreen.LOGIN)
         private set
@@ -70,6 +95,12 @@ class AgriViewModel(private val repository: AgriRepository) : ViewModel() {
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     val allAlerts: StateFlow<List<SMSAlert>> = repository.allAlerts
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    val allCustomers: StateFlow<List<Customer>> = repository.allCustomers
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    val allExpenses: StateFlow<List<Expense>> = repository.allExpenses
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     init {
@@ -331,6 +362,43 @@ class AgriViewModel(private val repository: AgriRepository) : ViewModel() {
     fun deleteSystemUser(username: String) {
         viewModelScope.launch {
             repository.deleteUser(username)
+        }
+    }
+
+    // --- EXPENSE MANAGEMENT ---
+    fun addExpense(title: String, category: String, amount: Double, note: String) {
+        viewModelScope.launch {
+            repository.insertExpense(Expense(
+                title = title,
+                category = category,
+                amount = amount,
+                timestamp = System.currentTimeMillis(),
+                note = note
+            ))
+        }
+    }
+
+    fun deleteExpense(id: Int) {
+        viewModelScope.launch {
+            repository.deleteExpenseById(id)
+        }
+    }
+
+    // --- CUSTOMER MANAGEMENT ---
+    fun addCustomer(name: String, phone: String, email: String, address: String) {
+        viewModelScope.launch {
+            repository.insertCustomer(Customer(
+                name = name,
+                phone = phone,
+                email = email,
+                address = address
+            ))
+        }
+    }
+
+    fun deleteCustomer(id: Int) {
+        viewModelScope.launch {
+            repository.deleteCustomerById(id)
         }
     }
 }

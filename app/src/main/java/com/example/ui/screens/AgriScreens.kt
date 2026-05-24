@@ -16,6 +16,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +30,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -37,6 +40,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.R
 import com.example.data.*
 import com.example.ui.AgriViewModel
 import com.example.ui.StoreNavScreen
@@ -45,13 +49,14 @@ import java.util.*
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun AgriStoreAppContent(viewModel: AgriViewModel) {
+fun AgriStoreAppContent(viewModel: AgriViewModel, windowSizeClass: WindowSizeClass) {
     val context = LocalContext.current
     val currentScreen = viewModel.currentScreen
+    val useNavRail = windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact
 
     Scaffold(
         bottomBar = {
-            if (viewModel.currentUser != null) {
+            if (viewModel.currentUser != null && !useNavRail) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -61,84 +66,140 @@ fun AgriStoreAppContent(viewModel: AgriViewModel) {
                     horizontalArrangement = Arrangement.SpaceAround,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    val currentRole = viewModel.currentUser?.role ?: UserRole.CASHIER
-
-                    // Nav Icon Item Helper
-                    NavigationBarIconItem(
-                        icon = Icons.Default.Dashboard,
-                        label = "Dashboard",
-                        selected = currentScreen == StoreNavScreen.DASHBOARD,
-                        onClick = { viewModel.navigateTo(StoreNavScreen.DASHBOARD) }
-                    )
-
-                    NavigationBarIconItem(
-                        icon = Icons.Default.PointOfSale,
-                        label = "Cashier",
-                        selected = currentScreen == StoreNavScreen.CASHIER_TERMINAL,
-                        onClick = { viewModel.navigateTo(StoreNavScreen.CASHIER_TERMINAL) }
-                    )
-
-                    if (currentRole == UserRole.ADMIN || currentRole == UserRole.MANAGER) {
-                        NavigationBarIconItem(
-                            icon = Icons.Default.Inventory,
-                            label = "Inventory",
-                            selected = currentScreen == StoreNavScreen.INVENTORY_MANAGER,
-                            onClick = { viewModel.navigateTo(StoreNavScreen.INVENTORY_MANAGER) }
-                        )
-
-                        NavigationBarIconItem(
-                            icon = Icons.Default.BarChart,
-                            label = "Reports",
-                            selected = currentScreen == StoreNavScreen.SALES_REPORTS,
-                            onClick = { viewModel.navigateTo(StoreNavScreen.SALES_REPORTS) }
-                        )
-                    }
-
-                    if (currentRole == UserRole.ADMIN) {
-                        NavigationBarIconItem(
-                            icon = Icons.Default.People,
-                            label = "Users",
-                            selected = currentScreen == StoreNavScreen.ROLE_USERS,
-                            onClick = { viewModel.navigateTo(StoreNavScreen.ROLE_USERS) }
-                        )
-                    }
-
-                    NavigationBarIconItem(
-                        icon = Icons.Default.NotificationsActive,
-                        label = "Alerts",
-                        selected = currentScreen == StoreNavScreen.ALERT_CENTER,
-                        badgeCount = viewModel.allAlerts.collectAsState().value.filter { it.status == "DELIVERED" }.size,
-                        onClick = { viewModel.navigateTo(StoreNavScreen.ALERT_CENTER) }
-                    )
+                    AgriNavItems(viewModel, currentScreen)
                 }
             }
         }
     ) { innerPadding ->
-        Box(
+        Row(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .background(MaterialTheme.colorScheme.background)
         ) {
-            AnimatedContent(
-                targetState = currentScreen,
-                transitionSpec = {
-                    fadeIn(animationSpec = spring()) togetherWith fadeOut(animationSpec = spring())
-                },
-                label = "ScreenTransitions"
-            ) { targetScreen ->
-                when (targetScreen) {
-                    StoreNavScreen.LOGIN -> LoginGateScreen(viewModel)
-                    StoreNavScreen.DASHBOARD -> DashboardScreen(viewModel)
-                    StoreNavScreen.CASHIER_TERMINAL -> CashierScreen(viewModel)
-                    StoreNavScreen.INVENTORY_MANAGER -> InventoryScreen(viewModel)
-                    StoreNavScreen.SALES_REPORTS -> SalesReportsScreen(viewModel)
-                    StoreNavScreen.ROLE_USERS -> RoleUsersScreen(viewModel)
-                    StoreNavScreen.ALERT_CENTER -> AlertsCenterScreen(viewModel)
+            if (viewModel.currentUser != null && useNavRail) {
+                NavigationRail(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                    header = {
+                        Icon(
+                            imageVector = Icons.Default.Agriculture,
+                            contentDescription = null,
+                            modifier = Modifier.padding(16.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                ) {
+                    AgriNavItems(viewModel, currentScreen, isRail = true)
+                }
+            }
+
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .background(MaterialTheme.colorScheme.background)
+            ) {
+                AnimatedContent(
+                    targetState = currentScreen,
+                    transitionSpec = {
+                        fadeIn(animationSpec = spring()) togetherWith fadeOut(animationSpec = spring())
+                    },
+                    label = "ScreenTransitions"
+                ) { targetScreen ->
+                    when (targetScreen) {
+                        StoreNavScreen.LOGIN -> LoginGateScreen(viewModel)
+                        StoreNavScreen.DASHBOARD -> DashboardScreen(viewModel)
+                        StoreNavScreen.CASHIER_TERMINAL -> CashierScreen(viewModel)
+                        StoreNavScreen.INVENTORY_MANAGER -> InventoryScreen(viewModel)
+                        StoreNavScreen.SALES_REPORTS -> SalesReportsScreen(viewModel)
+                        StoreNavScreen.ROLE_USERS -> RoleUsersScreen(viewModel)
+                        StoreNavScreen.ALERT_CENTER -> AlertsCenterScreen(viewModel)
+                        StoreNavScreen.EXPENSES -> ExpensesScreen(viewModel)
+                        StoreNavScreen.CUSTOMERS -> CustomersScreen(viewModel)
+                    }
                 }
             }
         }
     }
+}
+
+@Composable
+fun AgriNavItems(viewModel: AgriViewModel, currentScreen: StoreNavScreen, isRail: Boolean = false) {
+    val currentRole = viewModel.currentUser?.role ?: UserRole.CASHIER
+
+    if (isRail) {
+        Column(
+            modifier = Modifier.fillMaxHeight(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            NavContent(viewModel, currentScreen, currentRole)
+        }
+    } else {
+        NavContent(viewModel, currentScreen, currentRole)
+    }
+}
+
+@Composable
+private fun NavContent(viewModel: AgriViewModel, currentScreen: StoreNavScreen, currentRole: UserRole) {
+    NavigationBarIconItem(
+        icon = Icons.Default.Dashboard,
+        label = stringResource(R.string.nav_dashboard),
+        selected = currentScreen == StoreNavScreen.DASHBOARD,
+        onClick = { viewModel.navigateTo(StoreNavScreen.DASHBOARD) }
+    )
+
+    NavigationBarIconItem(
+        icon = Icons.Default.PointOfSale,
+        label = stringResource(R.string.nav_cashier),
+        selected = currentScreen == StoreNavScreen.CASHIER_TERMINAL,
+        onClick = { viewModel.navigateTo(StoreNavScreen.CASHIER_TERMINAL) }
+    )
+
+    if (currentRole == UserRole.ADMIN || currentRole == UserRole.MANAGER) {
+        NavigationBarIconItem(
+            icon = Icons.Default.Inventory,
+            label = stringResource(R.string.nav_inventory),
+            selected = currentScreen == StoreNavScreen.INVENTORY_MANAGER,
+            onClick = { viewModel.navigateTo(StoreNavScreen.INVENTORY_MANAGER) }
+        )
+
+        NavigationBarIconItem(
+            icon = Icons.Default.Payments,
+            label = stringResource(R.string.nav_expenses),
+            selected = currentScreen == StoreNavScreen.EXPENSES,
+            onClick = { viewModel.navigateTo(StoreNavScreen.EXPENSES) }
+        )
+
+        NavigationBarIconItem(
+            icon = Icons.Default.Group,
+            label = stringResource(R.string.nav_customers),
+            selected = currentScreen == StoreNavScreen.CUSTOMERS,
+            onClick = { viewModel.navigateTo(StoreNavScreen.CUSTOMERS) }
+        )
+
+        NavigationBarIconItem(
+            icon = Icons.Default.BarChart,
+            label = stringResource(R.string.nav_reports),
+            selected = currentScreen == StoreNavScreen.SALES_REPORTS,
+            onClick = { viewModel.navigateTo(StoreNavScreen.SALES_REPORTS) }
+        )
+    }
+
+    if (currentRole == UserRole.ADMIN) {
+        NavigationBarIconItem(
+            icon = Icons.Default.People,
+            label = stringResource(R.string.nav_users),
+            selected = currentScreen == StoreNavScreen.ROLE_USERS,
+            onClick = { viewModel.navigateTo(StoreNavScreen.ROLE_USERS) }
+        )
+    }
+
+    NavigationBarIconItem(
+        icon = Icons.Default.NotificationsActive,
+        label = stringResource(R.string.nav_alerts),
+        selected = currentScreen == StoreNavScreen.ALERT_CENTER,
+        badgeCount = viewModel.allAlerts.collectAsState().value.filter { it.status == "DELIVERED" }.size,
+        onClick = { viewModel.navigateTo(StoreNavScreen.ALERT_CENTER) }
+    )
 }
 
 @Composable
@@ -249,8 +310,8 @@ fun LoginGateScreen(viewModel: AgriViewModel) {
                 OutlinedTextField(
                     value = usernameInput,
                     onValueChange = { usernameInput = it },
-                    label = { Text("Username") },
-                    leadingIcon = { Icon(Icons.Default.Person, contentDescription = "User") },
+                    label = { Text(stringResource(R.string.login_username)) },
+                    leadingIcon = { Icon(Icons.Default.Person, contentDescription = null) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
@@ -260,13 +321,13 @@ fun LoginGateScreen(viewModel: AgriViewModel) {
                 OutlinedTextField(
                     value = pinInput,
                     onValueChange = { pinInput = it },
-                    label = { Text("Security passcode (PIN)") },
-                    leadingIcon = { Icon(Icons.Default.Lock, contentDescription = "Passcode") },
+                    label = { Text(stringResource(R.string.login_password)) },
+                    leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
                     trailingIcon = {
                         IconButton(onClick = { showPin = !showPin }) {
                             Icon(
                                 imageVector = if (showPin) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                                contentDescription = "Toggle Visibility"
+                                contentDescription = null
                             )
                         }
                     },
@@ -296,9 +357,9 @@ fun LoginGateScreen(viewModel: AgriViewModel) {
                         .height(50.dp),
                     shape = RoundedCornerShape(12.dp)
                 ) {
-                    Icon(Icons.Default.Login, contentDescription = "Login")
+                    Icon(Icons.Default.Login, contentDescription = null)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Unlock Terminal", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                    Text(stringResource(R.string.login_btn), fontWeight = FontWeight.Bold, fontSize = 16.sp)
                 }
             }
         }
@@ -386,6 +447,11 @@ fun DashboardScreen(viewModel: AgriViewModel) {
     val offlinePendingRevenue = sales.filter { it.isPendingSync }.sumOf { it.totalAmount }
     val totalSalesCount = sales.size
     val lowStockItemsCount = products.filter { it.stockQuantity <= it.minStockThreshold }.size
+    
+    val customers by viewModel.allCustomers.collectAsState()
+    val expenses by viewModel.allExpenses.collectAsState()
+    val totalExpenses = expenses.sumOf { it.amount }
+    val customerCount = customers.size
 
     Column(
         modifier = Modifier
@@ -418,6 +484,35 @@ fun DashboardScreen(viewModel: AgriViewModel) {
                 colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.errorContainer)
             ) {
                 Icon(Icons.Default.Logout, contentDescription = "Sign Out", tint = MaterialTheme.colorScheme.error)
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Quick Actions for Backup and Export
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Button(
+                onClick = { viewModel.backupAllData(context) },
+                modifier = Modifier.weight(1f),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Icon(Icons.Default.Backup, contentDescription = null, modifier = Modifier.size(18.dp))
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(stringResource(R.string.btn_backup))
+            }
+            Button(
+                onClick = { viewModel.exportSalesReport(context) },
+                modifier = Modifier.weight(1f),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Icon(Icons.Default.FileDownload, contentDescription = null, modifier = Modifier.size(18.dp))
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(stringResource(R.string.btn_export))
             }
         }
 
@@ -505,19 +600,19 @@ fun DashboardScreen(viewModel: AgriViewModel) {
         ) {
             DashboardKpiCard(
                 modifier = Modifier.weight(1f),
-                title = "Total Synced Rev",
+                title = stringResource(R.string.kpi_total_sales),
                 value = "$${String.format(Locale.US, "%.2f", totalRevenue)}",
-                tagline = "+12% compared to last cycle",
+                tagline = "+12% growth",
                 icon = Icons.Default.TrendingUp,
                 color = MaterialTheme.colorScheme.primary
             )
             DashboardKpiCard(
                 modifier = Modifier.weight(1f),
-                title = "Offline Pending",
-                value = "$${String.format(Locale.US, "%.2f", offlinePendingRevenue)}",
-                tagline = "Awaiting cloud link",
-                icon = Icons.Default.Backup,
-                color = if (offlinePendingRevenue > 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.secondary
+                title = stringResource(R.string.kpi_total_expenses),
+                value = "$${String.format(Locale.US, "%.2f", totalExpenses)}",
+                tagline = "${expenses.size} entries",
+                icon = Icons.Default.MoneyOff,
+                color = MaterialTheme.colorScheme.error
             )
         }
 
@@ -529,18 +624,18 @@ fun DashboardScreen(viewModel: AgriViewModel) {
         ) {
             DashboardKpiCard(
                 modifier = Modifier.weight(1f),
-                title = "Completed Sales",
-                value = "$totalSalesCount orders",
-                tagline = "Processed locally",
-                icon = Icons.Default.Receipt,
-                color = MaterialTheme.colorScheme.tertiary
+                title = stringResource(R.string.kpi_customer_count),
+                value = "$customerCount",
+                tagline = "Active base",
+                icon = Icons.Default.Group,
+                color = MaterialTheme.colorScheme.secondary
             )
             val indicatorColor = if (lowStockItemsCount > 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
             DashboardKpiCard(
                 modifier = Modifier.weight(1f),
-                title = "Low Stock Alerts",
-                value = "$lowStockItemsCount SKUs",
-                tagline = if (lowStockItemsCount > 0) "Immediate restock required!" else "Stock healthy",
+                title = stringResource(R.string.kpi_low_stock),
+                value = "$lowStockItemsCount",
+                tagline = if (lowStockItemsCount > 0) "Restock needed!" else "Stock healthy",
                 icon = Icons.Default.Warning,
                 color = indicatorColor
             )
@@ -562,13 +657,13 @@ fun DashboardScreen(viewModel: AgriViewModel) {
                 ) {
                     Column {
                         Text(
-                            text = "Financial Performance Trends",
+                            text = stringResource(R.string.title_performance),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            text = "Historical sales revenue records (drawn dynamically)",
+                            text = stringResource(R.string.subtitle_performance),
                             fontSize = 11.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -1244,8 +1339,8 @@ fun InventoryScreen(viewModel: AgriViewModel) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
-                Text("Stock Inventory Controller", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
-                Text("Track seeds, cattle feeds, and tools offline/online", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(stringResource(R.string.nav_inventory), fontSize = 18.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                Text("Track seeds, cattle feeds, and tools", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
 
             Button(
@@ -1258,9 +1353,9 @@ fun InventoryScreen(viewModel: AgriViewModel) {
                 },
                 shape = RoundedCornerShape(8.dp)
             ) {
-                Icon(Icons.Default.AddBox, contentDescription = "Add")
+                Icon(Icons.Default.AddBox, contentDescription = null)
                 Spacer(modifier = Modifier.width(4.dp))
-                Text("Restock Form", fontSize = 12.sp)
+                Text(stringResource(R.string.btn_add), fontSize = 12.sp)
             }
         }
 
@@ -1746,8 +1841,8 @@ fun SalesReportsScreen(viewModel: AgriViewModel) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
-                Text("Financial Audits & Data Exports", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
-                Text("Export encrypted spreadsheets and record sales logs", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(stringResource(R.string.nav_reports), fontSize = 18.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                Text(stringResource(R.string.subtitle_reports_desc), fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
 
@@ -1761,12 +1856,12 @@ fun SalesReportsScreen(viewModel: AgriViewModel) {
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    text = "Seamless Store record-keeping exports",
+                    text = stringResource(R.string.nav_reports),
                     fontWeight = FontWeight.Bold,
                     fontSize = 13.sp,
                     color = MaterialTheme.colorScheme.primary
                 )
-                Text("Compile database lists into portable CSV spreadsheet strings.", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(stringResource(R.string.desc_record_keeping), fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Row(
@@ -1774,62 +1869,24 @@ fun SalesReportsScreen(viewModel: AgriViewModel) {
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Button(
-                        onClick = {
-                            try {
-                                val csvData = viewModel.compileInventoryReportCsv()
-                                clipboardManager.setText(AnnotatedString(csvData))
-                                Toast.makeText(context, "CSV Inventory copied & starting export...", Toast.LENGTH_SHORT).show()
-                                val sendIntent = android.content.Intent().apply {
-                                    action = android.content.Intent.ACTION_SEND
-                                    putExtra(android.content.Intent.EXTRA_TEXT, csvData)
-                                    type = "text/plain"
-                                    addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
-                                }
-                                val shareIntent = android.content.Intent.createChooser(sendIntent, "Export Stocks CSV").apply {
-                                    addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
-                                }
-                                context.startActivity(shareIntent)
-                            } catch (t: Throwable) {
-                                t.printStackTrace()
-                                Toast.makeText(context, "Export error: ${t.localizedMessage}", Toast.LENGTH_LONG).show()
-                            }
-                        },
+                        onClick = { viewModel.exportInventoryReport(context) },
                         modifier = Modifier.weight(1f),
                         shape = RoundedCornerShape(8.dp)
                     ) {
-                        Icon(Icons.Default.Download, contentDescription = "CSV stock")
+                        Icon(Icons.Default.Inventory2, contentDescription = null, modifier = Modifier.size(16.dp))
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text("Export CSV Stocks", fontSize = 11.sp)
+                        Text(stringResource(R.string.label_inventory_excel), fontSize = 11.sp)
                     }
 
                     Button(
-                        onClick = {
-                            try {
-                                val csvData = viewModel.compileSalesReportCsv()
-                                clipboardManager.setText(AnnotatedString(csvData))
-                                Toast.makeText(context, "CSV Sales copied & starting export...", Toast.LENGTH_SHORT).show()
-                                val sendIntent = android.content.Intent().apply {
-                                    action = android.content.Intent.ACTION_SEND
-                                    putExtra(android.content.Intent.EXTRA_TEXT, csvData)
-                                    type = "text/plain"
-                                    addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
-                                }
-                                val shareIntent = android.content.Intent.createChooser(sendIntent, "Export Sales CSV").apply {
-                                    addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
-                                }
-                                context.startActivity(shareIntent)
-                            } catch (t: Throwable) {
-                                t.printStackTrace()
-                                Toast.makeText(context, "Export error: ${t.localizedMessage}", Toast.LENGTH_LONG).show()
-                            }
-                        },
+                        onClick = { viewModel.exportSalesReport(context) },
                         modifier = Modifier.weight(1f),
                         shape = RoundedCornerShape(8.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
                     ) {
-                        Icon(Icons.Default.AssignmentReturned, contentDescription = "CSV sales")
+                        Icon(Icons.Default.Assessment, contentDescription = null, modifier = Modifier.size(16.dp))
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text("Export CSV Sales", fontSize = 11.sp)
+                        Text(stringResource(R.string.label_sales_excel), fontSize = 11.sp)
                     }
                 }
             }
@@ -2061,4 +2118,216 @@ fun AlertsCenterScreen(viewModel: AgriViewModel) {
             }
         }
     }
+}
+
+// ---------------- EXPENSES MANAGEMENT SCREEN ----------------
+@Composable
+fun ExpensesScreen(viewModel: AgriViewModel) {
+    val expenses by viewModel.allExpenses.collectAsState()
+    var showAddDialog by remember { mutableStateOf(false) }
+
+    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(stringResource(R.string.nav_expenses), fontSize = 24.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+            Button(onClick = { showAddDialog = true }) {
+                Icon(Icons.Default.Add, contentDescription = null)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(stringResource(R.string.btn_add))
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+
+        if (expenses.isEmpty()) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(stringResource(R.string.empty_list), color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        } else {
+            LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                items(expenses) { expense ->
+                    ExpenseItemCard(expense) { viewModel.deleteExpense(expense.id) }
+                }
+            }
+        }
+    }
+
+    if (showAddDialog) {
+        AddExpenseDialog(
+            onDismiss = { showAddDialog = false },
+            onConfirm = { title, category, amount, note ->
+                viewModel.addExpense(title, category, amount, note)
+                showAddDialog = false
+            }
+        )
+    }
+}
+
+@Composable
+fun ExpenseItemCard(expense: Expense, onDelete: () -> Unit) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
+    ) {
+        Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = Icons.Default.MoneyOff,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.error,
+                modifier = Modifier.size(40.dp).background(MaterialTheme.colorScheme.errorContainer, CircleShape).padding(8.dp)
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(expense.title, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                Text(expense.category, fontSize = 12.sp, color = MaterialTheme.colorScheme.primary)
+                if (expense.note.isNotBlank()) {
+                    Text(expense.note, fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
+            Column(horizontalAlignment = Alignment.End) {
+                Text("$${String.format("%.2f", expense.amount)}", fontWeight = FontWeight.Black, color = MaterialTheme.colorScheme.error)
+                Text(SimpleDateFormat("dd/MM/yyyy", Locale.US).format(Date(expense.timestamp)), fontSize = 10.sp)
+                IconButton(onClick = onDelete) {
+                    Icon(Icons.Default.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(20.dp))
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun AddExpenseDialog(onDismiss: () -> Unit, onConfirm: (String, String, Double, String) -> Unit) {
+    var title by remember { mutableStateOf("") }
+    var category by remember { mutableStateOf("General") }
+    var amount by remember { mutableStateOf("") }
+    var note by remember { mutableStateOf("") }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.btn_add) + " " + stringResource(R.string.nav_expenses)) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(value = title, onValueChange = { title = it }, label = { Text(stringResource(R.string.exp_title)) }, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(value = category, onValueChange = { category = it }, label = { Text(stringResource(R.string.exp_category)) }, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(value = amount, onValueChange = { amount = it }, label = { Text(stringResource(R.string.exp_amount)) }, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(value = note, onValueChange = { note = it }, label = { Text(stringResource(R.string.exp_note)) }, modifier = Modifier.fillMaxWidth())
+            }
+        },
+        confirmButton = {
+            Button(onClick = { onConfirm(title, category, amount.toDoubleOrNull() ?: 0.0, note) }) {
+                Text(stringResource(R.string.btn_save))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.btn_cancel)) }
+        }
+    )
+}
+
+// ---------------- CUSTOMERS MANAGEMENT SCREEN ----------------
+@Composable
+fun CustomersScreen(viewModel: AgriViewModel) {
+    val customers by viewModel.allCustomers.collectAsState()
+    var showAddDialog by remember { mutableStateOf(false) }
+
+    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(stringResource(R.string.nav_customers), fontSize = 24.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+            Button(onClick = { showAddDialog = true }) {
+                Icon(Icons.Default.PersonAdd, contentDescription = null)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(stringResource(R.string.btn_add))
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+
+        if (customers.isEmpty()) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(stringResource(R.string.empty_list), color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        } else {
+            LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                items(customers) { customer ->
+                    CustomerItemCard(customer) { viewModel.deleteCustomer(customer.id) }
+                }
+            }
+        }
+    }
+
+    if (showAddDialog) {
+        AddCustomerDialog(
+            onDismiss = { showAddDialog = false },
+            onConfirm = { name, phone, email, address ->
+                viewModel.addCustomer(name, phone, email, address)
+                showAddDialog = false
+            }
+        )
+    }
+}
+
+@Composable
+fun CustomerItemCard(customer: Customer, onDelete: () -> Unit) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = Icons.Default.AccountCircle,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.secondary,
+                modifier = Modifier.size(48.dp)
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(customer.name, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                Text(customer.phone, fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(customer.address, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            Column(horizontalAlignment = Alignment.End) {
+                Text("$${String.format("%.2f", customer.totalPurchases)}", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                if (customer.creditBalance > 0) {
+                    Text("$${String.format("%.2f", customer.creditBalance)}", fontSize = 12.sp, color = MaterialTheme.colorScheme.error, fontWeight = FontWeight.Bold)
+                }
+                IconButton(onClick = onDelete) {
+                    Icon(Icons.Default.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.error)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun AddCustomerDialog(onDismiss: () -> Unit, onConfirm: (String, String, String, String) -> Unit) {
+    var name by remember { mutableStateOf("") }
+    var phone by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var address by remember { mutableStateOf("") }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.btn_add) + " " + stringResource(R.string.nav_customers)) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text(stringResource(R.string.cust_name)) }, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(value = phone, onValueChange = { phone = it }, label = { Text(stringResource(R.string.cust_phone)) }, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(value = email, onValueChange = { email = it }, label = { Text(stringResource(R.string.cust_email)) }, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(value = address, onValueChange = { address = it }, label = { Text(stringResource(R.string.cust_address)) }, modifier = Modifier.fillMaxWidth())
+            }
+        },
+        confirmButton = {
+            Button(onClick = { onConfirm(name, phone, email, address) }) {
+                Text(stringResource(R.string.btn_save))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.btn_cancel)) }
+        }
+    )
 }

@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">농자재 매장 관리</string>
+    <string name="nav_dashboard">대시보드</string>
+    <string name="nav_cashier">포스기</string>
+    <string name="nav_inventory">재고 관리</string>
+    <string name="nav_expenses">지출 내역</string>
+    <string name="nav_customers">고객 관리</string>
+    <string name="nav_reports">보고서</string>
+    <string name="nav_users">사용자</string>
+    <string name="nav_alerts">알림</string>
+    
+    <string name="btn_add">추가</string>
+    <string name="btn_delete">삭제</string>
+    <string name="btn_save">저장</string>
+    <string name="btn_cancel">취소</string>
+    <string name="btn_search">검색</string>
+    <string name="btn_export">내보내기</string>
+    <string name="btn_backup">백업</string>
+    
+    <string name="kpi_total_sales">총 매출</string>
+    <string name="kpi_total_expenses">총 지출</string>
+    <string name="kpi_customer_count">고객 수</string>
+    <string name="kpi_low_stock">재고 부족</string>
+    
+    <string name="login_title">로그인</string>
+    <string name="login_username">사용자 아이디</string>
+    <string name="login_password">비밀번호</string>
+    <string name="login_btn">로그인</string>
+    
+    <string name="cust_name">고객 이름</string>
+    <string name="cust_phone">전화번호</string>
+    <string name="cust_email">이메일</string>
+    <string name="cust_address">주소</string>
+    <string name="cust_balance">잔액</string>
+    
+    <string name="exp_title">제목</string>
+    <string name="exp_category">카테고리</string>
+    <string name="exp_amount">금액</string>
+    <string name="exp_note">메모</string>
+    
+    <string name="prod_name">상품명</string>
+    <string name="prod_price">가격</string>
+    <string name="prod_stock">재고</string>
+    <string name="prod_sku">SKU</string>
+    
+    <string name="empty_list">기록이 없습니다</string>
+    <string name="confirm_delete">정말로 삭제하시겠습니까?</string>
+    <string name="hint_search">검색...</string>
+</resources>

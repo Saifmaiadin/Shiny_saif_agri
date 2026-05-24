@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">مدير المتجر الزراعي</string>
+    <string name="nav_dashboard">لوحة القيادة</string>
+    <string name="nav_cashier">الكاشير</string>
+    <string name="nav_inventory">المخزون</string>
+    <string name="nav_expenses">المصروفات</string>
+    <string name="nav_customers">العملاء</string>
+    <string name="nav_reports">التقارير</string>
+    <string name="nav_users">المستخدمين</string>
+    <string name="nav_alerts">التنبيهات</string>
+    
+    <string name="btn_add">إضافة</string>
+    <string name="btn_delete">حذف</string>
+    <string name="btn_save">حفظ</string>
+    <string name="btn_cancel">إلغاء</string>
+    <string name="btn_search">بحث</string>
+    <string name="btn_export">تصدير</string>
+    <string name="btn_backup">نسخة احتياطية</string>
+    
+    <string name="kpi_total_sales">إجمالي المبيعات</string>
+    <string name="kpi_total_expenses">إجمالي المصروفات</string>
+    <string name="kpi_customer_count">عدد العملاء</string>
+    <string name="kpi_low_stock">مخزون منخفض</string>
+    
+    <string name="login_title">تسجيل الدخول للمتجر</string>
+    <string name="login_username">اسم المستخدم</string>
+    <string name="login_password">كلمة المرور</string>
+    <string name="login_btn">دخول</string>
+    
+    <string name="cust_name">اسم العميل</string>
+    <string name="cust_phone">رقم الهاتف</string>
+    <string name="cust_email">البريد الإلكتروني</string>
+    <string name="cust_address">العنوان</string>
+    <string name="cust_balance">الرصيد</string>
+    
+    <string name="exp_title">العنوان</string>
+    <string name="exp_category">الفئة</string>
+    <string name="exp_amount">المبلغ</string>
+    <string name="exp_note">ملاحظة</string>
+    
+    <string name="prod_name">اسم المنتج</string>
+    <string name="prod_price">السعر</string>
+    <string name="prod_stock">المخزون</string>
+    <string name="prod_sku">رمز المنتج</string>
+    
+    <string name="empty_list">لا توجد سجلات</string>
+    <string name="confirm_delete">هل أنت متأكد من الحذف؟</string>
+    <string name="hint_search">بحث...</string>
+    <string name="title_performance">اتجاهات الأداء المالي</string>
+    <string name="subtitle_performance">سجلات إيرادات المبيعات التاريخية</string>
+    <string name="title_reports_desc">التدقيق المالي وتصدير البيانات</string>
+    <string name="subtitle_reports_desc">تصدير تقارير متخصصة متوافقة مع إكسيل</string>
+    <string name="label_inventory_excel">المخزون (إكسيل)</string>
+    <string name="label_sales_excel">المبيعات (إكسيل)</string>
+    <string name="desc_record_keeping">إنشاء ملفات CSV محمولة متوافقة مع مايكروسوفت إكسيل.</string>
+</resources>

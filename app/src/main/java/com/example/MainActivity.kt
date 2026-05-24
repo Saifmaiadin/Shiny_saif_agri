@@ -9,6 +9,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.data.AgriRepository
@@ -18,6 +21,7 @@ import com.example.ui.screens.AgriStoreAppContent
 import com.example.ui.theme.MyApplicationTheme
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
@@ -27,6 +31,7 @@ class MainActivity : ComponentActivity() {
         val repository = AgriRepository(applicationContext)
 
         setContent {
+            val windowSizeClass = calculateWindowSizeClass(this)
             MyApplicationTheme {
                 val viewModel: AgriViewModel = viewModel(
                     factory = AgriViewModelFactory(repository)
@@ -36,7 +41,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AgriStoreAppContent(viewModel = viewModel)
+                    AgriStoreAppContent(viewModel = viewModel, windowSizeClass = windowSizeClass)
                 }
             }
         }

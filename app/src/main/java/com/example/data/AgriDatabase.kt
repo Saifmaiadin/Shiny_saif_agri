@@ -67,6 +67,26 @@ interface AgriDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAlert(alert: SMSAlert): Long
 
+    // --- CUSTOMER QUERIES ---
+    @Query("SELECT * FROM customers ORDER BY name ASC")
+    fun getAllCustomersFlow(): Flow<List<Customer>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCustomer(customer: Customer): Long
+
+    @Query("DELETE FROM customers WHERE id = :id")
+    suspend fun deleteCustomerById(id: Int)
+
+    // --- EXPENSE QUERIES ---
+    @Query("SELECT * FROM expenses ORDER BY timestamp DESC")
+    fun getAllExpensesFlow(): Flow<List<Expense>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertExpense(expense: Expense): Long
+
+    @Query("DELETE FROM expenses WHERE id = :id")
+    suspend fun deleteExpenseById(id: Int)
+
     // --- TRANSACTION FOR SALE ENTRY ---
     @Transaction
     suspend fun processSaleEntry(sale: Sale, items: List<SaleItem>): Long {
@@ -98,8 +118,8 @@ interface AgriDao {
 }
 
 @Database(
-    entities = [User::class, Product::class, Sale::class, SaleItem::class, SMSAlert::class],
-    version = 1,
+    entities = [User::class, Product::class, Sale::class, SaleItem::class, SMSAlert::class, Customer::class, Expense::class],
+    version = 2,
     exportSchema = false
 )
 abstract class AgriDatabase : RoomDatabase() {
